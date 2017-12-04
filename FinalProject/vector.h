@@ -9,7 +9,7 @@
 
 enum vector_errors
 {
-	OUT_OF_BOUNDS = 0,
+	OUT_OF_BOUNDS = 69,
 };
 
 struct vector
