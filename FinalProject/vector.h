@@ -1,3 +1,4 @@
+
 #ifndef H_VECTOR_H
 #define H_VECTOR_H
 
@@ -12,20 +13,42 @@ enum vector_errors
 	OUT_OF_BOUNDS = 69,
 };
 
-struct vector
+typedef struct vector
 {
 	char** data;
 	int height;
-        int width;
+  int width;
 	int heightcapacity;
-        int widthcapacity;
-};
+  int widthcapacity;
+}Maze;
+
+typedef struct intVector{
+	int** data;
+	int height;
+	int width;
+	int heightcapacity;
+	int widthcapacity;
+}IntMaze;
 
 void init_vector(struct vector* v);
+void init_intVector(struct intVector* v);
 char access_element_vector(struct vector* v, size_t height, size_t width);
+char access_element_intVector(struct intVector* v, size_t height, size_t width);
 void insert_element_vector(struct vector* v, char element_to_insert, int height, int width);
+void insert_element_intVector(struct intVector* v, int element_to_insert, int height, int width);
 void free_vector(struct vector* v);
+void free_intVector(struct intVector* v);
 int vector_height(struct vector* v);
+int vector_intHeight(struct intVector* v);
 int vector_width(struct vector* v);
+int vector_intWidth(struct intVector* v);
+Maze parse_getline(char* input, Maze maze);
+void printMaze(Maze maze);
+void printIntMaze(IntMaze maze);
+IntMaze convertToInt(Maze maze, IntMaze intMaze, int *r1H, int *r1W, int *r2H, int *r2W, int *e1H, int *e1W, int *e2H, int *e2W);
+IntMaze search1(IntMaze intMaze, IntMaze search, int i, int j, int weight);
+IntMaze search2(IntMaze intMaze, IntMaze search, int i, int j, int weight);
+IntMaze search3(IntMaze intMaze, IntMaze search, int i, int j, int weight);
+IntMaze search4(IntMaze intMaze, IntMaze search, int i, int j, int weight);
 
 #endif
