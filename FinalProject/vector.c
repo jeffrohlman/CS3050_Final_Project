@@ -22,6 +22,12 @@ void init_intVector(struct intVector* v){
   v->widthcapacity = INIT_VECTOR_SIZE;
 }
 
+void init_stack(struct stack* v){
+        v->data = malloc(sizeof(Pos) * INIT_VECTOR_SIZE);
+	v->height = 0;
+	v->heightcapacity = INIT_VECTOR_SIZE;
+}
+
 char access_element_vector(struct vector* v, size_t height, size_t width)
 {
 	if(height > v->height)
@@ -123,4 +129,49 @@ int vector_width(struct vector* v){
 
 int vector_intWidth(struct intVector* v){
   return v -> width;
+}
+
+void push(Stack* stack, int height, int width, int weight){
+    if(stack->heightcapacity == stack->height){
+        stack->heightcapacity *= 2;
+        stack->data = realloc(stack->data, sizeof(Pos) * stack->heightcapacity);
+    }
+	stack->data[stack->height].height = height;
+        stack->data[stack->height].width = width;
+        stack->data[stack->height].weight = weight;
+	stack->height++;
+}
+Pos pop(Stack* stack){
+	if(stack->height == 0){
+            exit(OUT_OF_BOUNDS);
+	}
+        stack->height--;
+	return stack->data[stack->height];
+}
+
+//Pos init_pos(int h, int w, int weight){
+//    Pos p = malloc(sizeof(Pos));
+//    p->height = h;
+//    p->width = w;
+//    p->weight = weight;
+//    return p;
+//}
+
+int isEmpty(Stack* s){
+    if(s->height == 0)
+        return 1;
+    else
+        return 0;
+}
+
+int getHeight(Pos p){
+    return p.height;
+}
+
+int getWidth(Pos p){
+    return p.width;
+}
+
+int getWeight(Pos p){
+    return p.weight;
 }

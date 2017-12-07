@@ -23,15 +23,28 @@ typedef struct vector
 }Maze;
 
 typedef struct intVector{
-	int** data;
+	size_t** data;
 	int height;
 	int width;
 	int heightcapacity;
 	int widthcapacity;
 }IntMaze;
 
+typedef struct position{
+    size_t height;
+    size_t width;
+    size_t weight;
+}Pos;
+
+typedef struct stack{
+	Pos* data;
+	size_t height;
+	size_t heightcapacity;
+}Stack;
+
 void init_vector(struct vector* v);
 void init_intVector(struct intVector* v);
+void init_stack(struct stack* v);
 char access_element_vector(struct vector* v, size_t height, size_t width);
 char access_element_intVector(struct intVector* v, size_t height, size_t width);
 void insert_element_vector(struct vector* v, char element_to_insert, int height, int width);
@@ -50,5 +63,12 @@ IntMaze search1(IntMaze intMaze, IntMaze search, int i, int j, int weight);
 IntMaze search2(IntMaze intMaze, IntMaze search, int i, int j, int weight);
 IntMaze search3(IntMaze intMaze, IntMaze search, int i, int j, int weight);
 IntMaze search4(IntMaze intMaze, IntMaze search, int i, int j, int weight);
+void push(Stack* stack, int height, int width, int weight);
+Pos pop(Stack* stack);
+//Pos init_pos(int, int, int);
+int isEmpty(Stack* s);
+int getHeight(Pos s);
+int getWidth(Pos s);
+int getWeight(Pos s);
 
 #endif
