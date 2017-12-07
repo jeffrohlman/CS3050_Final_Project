@@ -37,7 +37,7 @@ char access_element_vector(struct vector* v, size_t height, size_t width)
 	return v->data[width][height];
 }
 
-char access_element_intVector(struct intVector* v, size_t height, size_t width){
+int access_element_intVector(struct intVector* v, size_t height, size_t width){
 	if(height > v->height)
 		exit(OUT_OF_BOUNDS);
   if(width > v->width)
@@ -73,27 +73,27 @@ void insert_element_vector(struct vector* v, char element_to_insert, int height,
 
 void insert_element_intVector(struct intVector* v, int element_to_insert, int height, int width)
 {
-	if(v->heightcapacity == v->height){
-    int i;
-    for(i = 0; i < v->widthcapacity; i++){
+    if(v->heightcapacity == v->height){
+        int i;
+        for(i = 0; i < v->widthcapacity; i++){
 			v->data[i] = realloc(v->data[i], sizeof(int) * v->heightcapacity * 2);
 			v->heightcapacity *= 2;
-  	}
-	}
+        }
+    }
 
   if(v->widthcapacity == v->width){
-		v->data = realloc(v->data, sizeof(int *) * v->widthcapacity * 2);
+    v->data = realloc(v->data, sizeof(int *) * v->widthcapacity * 2);
     int i;
     for(i = v->widthcapacity; i < v->widthcapacity * 2; i++)
     	v->data[i] = malloc(sizeof(int) * v->heightcapacity);
     v->widthcapacity *= 2;
-	}
+  }
 	v->data[width][height] = element_to_insert;
 	if(height > v-> height){
-    v->height = height;
+            v->height = height;
 	}
-  if(width > v-> width){
-  	v->width = width;
+        if(width > v-> width){
+            v->width = width;
 	}
 }
 

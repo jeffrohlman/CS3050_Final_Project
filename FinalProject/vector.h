@@ -46,7 +46,7 @@ void init_vector(struct vector* v);
 void init_intVector(struct intVector* v);
 void init_stack(struct stack* v);
 char access_element_vector(struct vector* v, size_t height, size_t width);
-char access_element_intVector(struct intVector* v, size_t height, size_t width);
+int access_element_intVector(struct intVector* v, size_t height, size_t width);
 void insert_element_vector(struct vector* v, char element_to_insert, int height, int width);
 void insert_element_intVector(struct intVector* v, int element_to_insert, int height, int width);
 void free_vector(struct vector* v);

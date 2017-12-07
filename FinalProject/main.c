@@ -57,10 +57,9 @@ int main(int argc, char* argv[]) {
   printIntMaze(bfs4);
   printf("\n\n");
   
-  printf("\n%d, %d, %d\n", vector_intHeight(&bfs3), vector_intWidth(&bfs3), access_element_intVector(&bfs3, 2, 7));
   
   if(access_element_intVector(&bfs1, e1H, e1W) > -1)
-      printf("There is a direct path for robot1 to exit2 of length %d.\n", access_element_intVector(&bfs1, e1H, e1W));
+      printf("There is a direct path for robot1 to exit1 of length %d.\n", access_element_intVector(&bfs1, e1H, e1W));
   else
       printf("There is no direct path from robot1 to exit1.\n");
   
@@ -263,21 +262,20 @@ void printIntMaze(IntMaze intMaze){
   for(i = 0; i <= height; i++){
     for(j = 0; j <= width; j++){
         x = access_element_intVector(&intMaze, i, j);
-        printf("%d", x);
-//        if(x == -1)
-//            printf("%s", "xxx");
-//        else if(x == 0)
-//            printf("%s", "$$$");
-//        else if(x/10 == 0)
-//            printf("00%d", abs(x));
-//        else if(x/10 >= 1 && x/10 <= 9)
-//            printf("0%d", abs(x));
-//        else if(x/10 >= 10 && x/10 <= 99)
-//            printf("%d", abs(x));
-//        else{
-//            printf("%s", "FUK");
-//            count++;
-//        }
+        if(x == -1)
+            printf("%s", "xxx");
+        else if(x == 0)
+            printf("%s", "$$$");
+        else if(x/10 == 0)
+            printf("00%d", abs(x));
+        else if(x/10 >= 1 && x/10 <= 9)
+            printf("0%d", abs(x));
+        else if(x/10 >= 10 && x/10 <= 99)
+            printf("%d", abs(x));
+        else{
+            printf("%s", "FUK");
+            count++;
+        }
     }
     printf("\n");
   }
@@ -539,6 +537,87 @@ IntMaze search4(IntMaze intMaze, IntMaze search, int i, int j, int weight){
     push(&s, i, j, weight);
     while(!isEmpty(&s)){
         p = pop(&s);
+            if(getHeight(p) != vector_intHeight(&intMaze)){
+                if(access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 0 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 3 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 7 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 2 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 6){
+                    if(access_element_intVector(&search, getHeight(p) + 1, getWidth(p)) == -1 || access_element_intVector(&search, getHeight(p) + 1, getWidth(p)) > getWeight(p) + 1){
+                        insert_element_intVector(&search, getWeight(p) + 1, getHeight(p) + 1, getWidth(p));
+                        push(&s, getHeight(p) + 1, getWidth(p), getWeight(p) + 1);
+                    }
+                }
+                if(getWidth(p) != vector_intWidth(&intMaze)){
+                    if(access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) + 1) == 0 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) + 1) == 3 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) + 1) == 7 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) + 1) == 2 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) + 1) == 6){
+                        if(access_element_intVector(&search, getHeight(p) + 1, getWidth(p) + 1) == -1 || access_element_intVector(&search, getHeight(p) + 1, getWidth(p) + 1) > getWeight(p) + 1){
+                            insert_element_intVector(&search, getWeight(p) + 1, getHeight(p) + 1, getWidth(p) + 1);
+                            push(&s, getHeight(p) + 1, getWidth(p) + 1, getWeight(p) + 1);
+                        }
+                    }
+                }
+                if(getWidth(p) != 0){
+                    if(access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) - 1) == 0 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) - 1) == 3 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) - 1) == 7 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) - 1) == 2 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p) - 1) == 6){
+                        if(access_element_intVector(&search, getHeight(p) + 1, getWidth(p) - 1) == -1 || access_element_intVector(&search, getHeight(p) + 1, getWidth(p) - 1) > getWeight(p) + 1){
+                            insert_element_intVector(&search, getWeight(p) + 1, getHeight(p) + 1, getWidth(p) - 1);
+                            push(&s, getHeight(p) + 1, getWidth(p) - 1, getWeight(p) + 1);
+                        }
+                    }
+                }
+            }
+            
+            if(getHeight(p) != 0){
+                if(access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p)) == 0 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p)) == 3 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p)) == 7 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p)) == 2 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p)) == 6){
+                    if(access_element_intVector(&search, getHeight(p) - 1, getWidth(p)) == -1 || access_element_intVector(&search, getHeight(p) - 1, getWidth(p)) > getWeight(p) + 1){
+                        insert_element_intVector(&search, getWeight(p) + 1, getHeight(p) - 1, getWidth(p));
+                        push(&s, getHeight(p) - 1, getWidth(p), getWeight(p) + 1);
+                    }
+                }
+                if(getWidth(p) != vector_intWidth(&intMaze)){
+                    if(access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) + 1) == 0 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) + 1) == 3 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) + 1) == 7 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) + 1) == 2 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) + 1) == 6){
+                        if(access_element_intVector(&search, getHeight(p) - 1, getWidth(p) + 1) == -1 || access_element_intVector(&search, getHeight(p) - 1, getWidth(p) + 1) > getWeight(p) + 1){
+                            insert_element_intVector(&search, getWeight(p) + 1, getHeight(p) - 1, getWidth(p) + 1);
+                            push(&s, getHeight(p) - 1, getWidth(p) + 1, getWeight(p) + 1);
+                        }
+                    }
+                }
+                if(getWidth(p) != 0){
+                    if(access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) - 1) == 0 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) - 1) == 3 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) - 1) == 7 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) - 1) == 2 || access_element_intVector(&intMaze, getHeight(p) - 1, getWidth(p) - 1) == 6){
+                        if(access_element_intVector(&search, getHeight(p) - 1, getWidth(p) - 1) == -1 || access_element_intVector(&search, getHeight(p) - 1, getWidth(p) - 1) > getWeight(p) + 1){
+                            insert_element_intVector(&search, getWeight(p) + 1, getHeight(p) - 1, getWidth(p) - 1);
+                            push(&s, getHeight(p) - 1, getWidth(p) - 1, getWeight(p) + 1);
+                        }
+                    }
+                }
+            }
+            
+            if(getWidth(p) != vector_intWidth(&intMaze)){
+                if(access_element_intVector(&intMaze, getHeight(p), getWidth(p) + 1) == 0 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) + 1) == 3 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) + 1) == 7 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) + 1) == 2 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) + 1) == 6){
+                    if(access_element_intVector(&search, getHeight(p), getWidth(p) + 1) == -1 || access_element_intVector(&search, getHeight(p), getWidth(p) + 1) > getWeight(p) + 1){
+                        insert_element_intVector(&search, getWeight(p) + 1, getHeight(p), getWidth(p) + 1);
+                        push(&s, getHeight(p), getWidth(p) + 1, getWeight(p) + 1);
+                    }
+                }
+            }
+            
+            if(getWidth(p) != 0){
+                if(access_element_intVector(&intMaze, getHeight(p), getWidth(p) - 1) == 0 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) - 1) == 3 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) - 1) == 7 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) - 1) == 2 || access_element_intVector(&intMaze, getHeight(p), getWidth(p) - 1) == 6){
+                    if(access_element_intVector(&search, getHeight(p), getWidth(p) - 1) == -1 || access_element_intVector(&search, getHeight(p), getWidth(p) - 1) > getWeight(p) + 1){
+                        insert_element_intVector(&search, getWeight(p) + 1, getHeight(p), getWidth(p) - 1);
+                        push(&s, getHeight(p), getWidth(p) - 1, getWeight(p) + 1);
+                    }
+                }
+            }
+    }
+            return search;
+}
+
+
+IntMaze search5(IntMaze intMaze, IntMaze search, IntMaze path, int i, int j, int weight){
+    Stack s;
+    init_stack(&s);
+    Pos p;
+    int curr = 0;
+    push(&s, i, j, weight);
+    while(!isEmpty(&s)){
+        p = pop(&s);
+        curr = getWeight(p);
             if(getHeight(p) != vector_intHeight(&intMaze)){
                 if(access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 0 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 3 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 7 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 2 || access_element_intVector(&intMaze, getHeight(p) + 1, getWidth(p)) == 6){
                     if(access_element_intVector(&search, getHeight(p) + 1, getWidth(p)) == -1 || access_element_intVector(&search, getHeight(p) + 1, getWidth(p)) > getWeight(p) + 1){
