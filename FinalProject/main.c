@@ -5,6 +5,7 @@
 
 int main(int argc, char* argv[]) {
    if(argc != 2){
+       printf("Incorrect number of arguments\n");
      exit(6);
    }
   Maze maze;
@@ -99,13 +100,16 @@ int main(int argc, char* argv[]) {
   if(access_element_intVector(&bfs1, e1H, e1W) > -1){
       //Robot 1 has direct path to exit
       printf("There is a direct path for robot 1 to exit 1 of length %d.\n", access_element_intVector(&bfs1, e1H, e1W));
+      printDirect(maze, bfs5, -1, -1, r2H, r2W);
       printf("Robot 1 takes the path.\n");
       if(access_element_intVector(&bfs4, r2H, r2W) > -1){
           //Robot 2 also has direct path
+          printDirect(maze, bfs6, -1, -1, -1, -1);
           printf("Robot 2 then takes a direct path to exit 2 of length %d.\n", access_element_intVector(&bfs4, r2H, r2W));
       }
       else{
           //Robot 2 does not have direct path
+          printDiverge(maze, -1, -1, r2H, r2W);
           printf("There is no direct path no matter what from robot2 to exit2.\n");
       }
   }
@@ -115,13 +119,16 @@ int main(int argc, char* argv[]) {
       if(access_element_intVector(&bfs2, e2H, e2W) > -1){
           //Robot 2 has direct path to exit
           printf("There is a direct path for robot 2 to exit 2 of length %d.\n", access_element_intVector(&bfs2, e2H, e2W));
+          printDirect(maze, bfs6, r1H, r1W, -1, -1);
           printf("Robot 2 takes the path.\n");
           if(access_element_intVector(&bfs3, r1H, r1W) > -1){
               //Robot 1 has direct path after diversion
+              printDirect(maze, bfs5, -1, -1, -1, -1);
             printf("Robot 1 then takes a direct path to exit 1 of length %d.\n", access_element_intVector(&bfs3, r1H, r1W));
           }
           else{
               //Robot 1 does not have direct path even after diversion
+              printDiverge(maze, r1H, r1W, -1, -1);
             printf("There is no direct path no matter what from robot1 to exit1.\n");
           }
       }
@@ -154,15 +161,21 @@ int main(int argc, char* argv[]) {
                       //There is a possible diversion
                       if(temp < temp2){
                           //Robot 2 diverges for robot 1 to pass
-                        printf("Robot 1 moves to (%d, %d) of length %d.\n", tempj, tempi, access_element_intVector(&bfs7, tempi, tempj) - access_element_intVector(&bfs3, tempi, tempj) - 1);
+                          printDiverge(maze, tempi, tempj, r2H, r2W);
+                        printf("Robot 1 moves to (%d, %d) of length %d.\n", tempj, tempi, access_element_intVector(&bfs1, tempi, tempj));
+                        printDirect(maze, bfs6, tempi, tempj, -1, -1);
                         printf("Robot 2 then takes a direct path to exit 2 of length %d.\n", access_element_intVector(&bfs4, r2H, r2W));
+                        printDiverge(maze, -1, -1, -1, -1);
                         printf("Robot 1 then moves to exit 1 for total length of %d.\n",  access_element_intVector(&bfs7, tempi, tempj));
                       }
                       else{
                           //Robot 1 diverges for robot 2 to pass
-                        printf("Robot 2 moves to (%d, %d) of length %d.\n", tempj, tempi, access_element_intVector(&bfs8, tempi, tempj) - access_element_intVector(&bfs4, tempi, tempj) - 1);
+                          printDiverge(maze, r1H, r1W, tempi2, tempj2);
+                        printf("Robot 2 moves to (%d, %d) of length %d.\n", tempj2, tempi2, access_element_intVector(&bfs2, tempi2, tempj2));
+                        printDirect(maze, bfs5, -1, -1, tempi2, tempj2);
                         printf("Robot 1 then takes a direct path to exit 1 of length %d.\n", access_element_intVector(&bfs3, r1H, r1W));
-                        printf("Robot 2 then moves to exit 2 for total length of %d.\n",  access_element_intVector(&bfs8, tempi, tempj));
+                        printDiverge(maze, -1, -1, -1, -1);
+                        printf("Robot 2 then moves to exit 2 for total length of %d.\n",  access_element_intVector(&bfs8, tempi2, tempj2));
                       }
                   }
               }
@@ -183,8 +196,11 @@ int main(int argc, char* argv[]) {
                   }
                   else{
                       //Robot 2 diverges so robot 1 exits, robot 2 cannot reach exit
-                      printf("Robot 2 moves to (%d, %d) of length %d.\n", tempj, tempi, access_element_intVector(&bfs8, tempi, tempj) - access_element_intVector(&bfs4, tempi, tempj) - 1);
+                      printDiverge(maze, r1H, r1W, tempi, tempj);
+                      printf("Robot 2 moves to (%d, %d) of length %d.\n", tempj, tempi, access_element_intVector(&bfs2, tempi, tempj));
+                      printDirect(maze, bfs5, -1, -1, tempi, tempj);
                       printf("Robot 1 then takes a direct path to exit 1 of length %d.\n", access_element_intVector(&bfs3, r1H, r1W));
+                      printDiverge(maze, -1, -1, tempi, tempj);
                       printf("Robot 2 cannot reach his exit.\n");
                   }
               }
@@ -208,9 +224,11 @@ int main(int argc, char* argv[]) {
                   }
                   else{
                       //robot 1 diverges for robot 2 to exit, robot 1 cannot reach exit
-                      printf("%d\n", access_element_intVector(&bfs7, tempi, tempj));
+                      printDiverge(maze, tempi, tempj, r2H, r2W);
                       printf("Robot 1 moves to (%d, %d) of length %d.\n", tempj, tempi, access_element_intVector(&bfs1, tempi, tempj));
+                      printDirect(maze, bfs6, tempi, tempj, -1, -1);
                       printf("Robot 2 then takes a direct path to exit 2 of length %d.\n", access_element_intVector(&bfs4, r2H, r2W));
+                      printDiverge(maze, tempi, tempj, -1, -1);
                       printf("Robot 1 cannot reach his exit.\n");
                   }
               }
@@ -241,26 +259,58 @@ int main(int argc, char* argv[]) {
 Maze parse_getline(char* input, Maze maze) {
   int counter = 0;
   int width = 0;
+  int s = 0, f = 0, e = 0, l = 0;
+  int i;
   FILE* fp = fopen(input, "r");
-  if(!fp){
+  
+  //check for issues opening file
+  if(fp == NULL){
+      printf("File does not open.\n");
       exit(5);
   }
   char* line = NULL;
   size_t nbytes = 0;
   int linelen=0;
-while ((linelen=getline(&line, &nbytes, fp)) != -1) {
-  line[linelen-1] = '\0';
-  if(width < linelen){
-    width = linelen;
-  }
-  int j = 0;
-  for(j = 0; j < linelen; j++){
-    insert_element_vector(&maze, line[j], counter, j);
-  }
+  while ((linelen=getline(&line, &nbytes, fp)) != -1) {
+    line[linelen-1] = '\0';
+    for(i=0; i < linelen - 1; i++){
+        if(line[i] == 'F'){ 
+            f++;
+        }
+        if(line[i] == 'E'){ 
+            e++;
+        }
+        if(line[i] == 'S'){ 
+            s++;
+        }
+        if(line[i] == 'L'){ 
+            l++;
+        }
+    }
+    
+    
+    
+    if(width < linelen){
+        width = linelen;
+    }
+    int j = 0;
+    for(j = 0; j < linelen; j++){
+        insert_element_vector(&maze, line[j], counter, j);
+    }
   counter++;
 }
+  if(l != 1 || s != 1 || e != 1 || f != 1){
+        printf("Parsing Error.\n");
+        exit(7);
+    }
   free(line);
   fclose(fp);
+  
+  //check for issues closing file
+  if(!fp){
+      printf("File failed to close.\n");
+      exit(7);
+  }
   return(maze);
 }
 
@@ -408,6 +458,54 @@ void printMaze(Maze maze){
   for(i = 0; i < height + 1; i++){
     for(j = 0; j < width + 1; j++){
       printf("%c", access_element_vector(&maze, i, j));
+    }
+    printf("\n");
+  }
+}
+
+void printDiverge(Maze maze, int r1h, int r1w, int r2h, int r2w){
+  int i, j;
+  int height = vector_height(&maze);
+  int width = vector_width(&maze);
+  for(i = 0; i < height + 1; i++){
+    for(j = 0; j < width - 1; j++){
+        if(i == r1h && j == r1w)
+            printf("%c", 'S');
+        else if(i == r2h && j == r2w)
+            printf("%c", 'F');
+        else if(access_element_vector(&maze, i, j) == 'S')
+            printf("%c", ' ');
+        else if(access_element_vector(&maze, i, j) == 'F')
+            printf("%c", ' ');
+        else
+            printf("%c", access_element_vector(&maze, i, j));
+    }
+    printf("\n");
+  }
+}
+
+void printDirect(Maze maze, IntMaze direct, int r1h, int r1w, int r2h, int r2w){
+  int i, j;
+  int height = vector_height(&maze);
+  int width = vector_width(&maze);
+  for(i = 0; i <= height; i++){
+    for(j = 0; j < width - 1; j++){
+        if(access_element_vector(&maze, i, j) == 'E')
+            printf("E");
+        else if(access_element_vector(&maze, i, j) == 'L')
+            printf("L");
+        else if(access_element_intVector(&direct, i, j) == -2)
+            printf("+");
+        else if(i == r1h && j == r1w)
+            printf("%c", 'S');
+        else if(i == r2h && j == r2w)
+            printf("%c", 'F');
+        else if(access_element_vector(&maze, i, j) == 'S')
+            printf("%c", ' ');
+        else if(access_element_vector(&maze, i, j) == 'F')
+            printf("%c", ' ');
+        else
+            printf("%c", access_element_vector(&maze, i, j));
     }
     printf("\n");
   }

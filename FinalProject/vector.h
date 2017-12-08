@@ -71,5 +71,7 @@ int isEmpty(Stack* s);
 int getHeight(Pos s);
 int getWidth(Pos s);
 int getWeight(Pos s);
+void printDirect(Maze maze, IntMaze direct, int r1h, int r1w, int r2h, int r2w);
+void printDiverge(Maze maze, int r1h, int r1w, int r2h, int r2w);
 
 #endif
